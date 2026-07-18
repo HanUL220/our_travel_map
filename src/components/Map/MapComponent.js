@@ -1,39 +1,54 @@
 // src/components/Map/MapComponent.js
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // 🔥 라우터 훅 추가
 import { ReactComponent as SouthKoreaMap } from "../../assets/korea_map.svg"; 
 import regionData from "./regionData";
 import "./MapComponent.css";
 
 const MapComponent = () => {
   const [hoveredRegion, setHoveredRegion] = useState(null);
+  const [zoomingRegion, setZoomingRegion] = useState(null);
+  
+  const navigate = useNavigate(); // 🔥 네비게이트 함수 선언
 
-  // 지역 클릭 시 동작
-  const handleRegionClick = (regionId) => {
-    if (!regionId) return;
-    console.log(`${regionId} 클릭됨! 해당 지역 사진첩으로 이동합니다.`);
-    // TODO: 라우터 이동 (예: navigate(`/region/${regionId}`))
-  };
-
-  // 지도(path)에 마우스가 올라가거나 클릭될 때의 통합 이벤트 처리
   const handleMapInteraction = (e, type) => {
-    const target = e.target;
+    const target = e.target.closest('path') || e.target.closest('g');
+    if (!target) return;
+
+    const regionId = String(target.id);
     
-    // 클릭이나 호버된 요소가 SVG의 path(지역)일 경우에만 작동
-    if (target.tagName === 'path') {
-      const regionId = target.id;
-      if (type === 'click') {
-        handleRegionClick(regionId);
-      } else if (type === 'hover') {
-        setHoveredRegion(regionId);
+    if (type === 'click') {
+      const isSeoul = regionId.includes("Seoul") || 
+                      regionId.includes("seoul") || 
+                      regionId.includes("서울") || 
+                      regionId.includes("C11C");
+
+      if (isSeoul) {
+        setZoomingRegion("Seoul"); 
+        
+        // 🔥 0.6초간 애니메이션을 보여준 뒤, /seoul 경로로 이동합니다.
+        setTimeout(() => {
+          navigate("/seoul");
+        }, 600); 
+      } else {
+        alert("현재 서울 지역만 구현되어 있습니다.");
       }
+    } else if (type === 'hover') {
+      setHoveredRegion(regionId);
     }
   };
 
   return (
     <div className="map-wrapper">
-      <div className="map-container">
-        
+      <div 
+        className={`map-container ${zoomingRegion ? 'zoom-active' : ''}`}
+        style={
+          zoomingRegion === 'Seoul' 
+            ? { transformOrigin: '32.5% 19.5%' } 
+            : {}
+        }
+      >
         <SouthKoreaMap 
           className="korea-map" 
           onClick={(e) => handleMapInteraction(e, 'click')}
@@ -44,9 +59,9 @@ const MapComponent = () => {
         {regionData.map((region) => (
           <div
             key={region.id}
-            className={`region-label ${hoveredRegion === region.id ? "hovered-text" : ""}`}
+            className={`region-label ${hoveredRegion === region.id ? "hovered-text" : ""} ${zoomingRegion ? "fade-out" : ""}`}
             style={{ left: `${region.x}%`, top: `${region.y}%` }}
-            // 이벤트 통합을 위해 글자의 모든 onClick, onMouse~ 속성을 제거했습니다.
+            onClick={() => handleMapInteraction({ target: { closest: () => ({ id: region.id }) } }, 'click')}
           >
             {region.name}
           </div>

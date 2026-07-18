@@ -70,3 +70,25 @@
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   z-index: 20;
 }
+
+/* --------------------------------------
+   애니메이션 및 전환 효과 
+-------------------------------------- */
+
+/* 지도 컨테이너 기본 전환 속성 */
+.map-container {
+  transition: all 0.6s ease-in-out; 
+}
+
+/* 🌟 특정 지역 클릭 시 훅 들어가는 효과 (크기를 6배로 키우고 투명해짐) */
+.zoom-active {
+  transform: scale(6);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 줌인 될 때 글자들은 깔끔하게 미리 사라지게 함 */
+.fade-out {
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
