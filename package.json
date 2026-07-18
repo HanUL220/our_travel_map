@@ -1,4 +1,5 @@
 {
+  "homepage": "https://HanUL220.github.io/our_travel_map",
   "name": "our_travel_map",
   "version": "0.1.0",
   "private": true,
@@ -16,7 +17,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "deploy-all": "git add . && git commit -m \"코드 업데이트 및 자동 배포\" && git push origin main && npm run deploy"
   },
   "eslintConfig": {
     "extends": [
@@ -35,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
