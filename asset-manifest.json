@@ -1,16 +1,17 @@
 {
   "files": {
-    "main.css": "/our_travel_map/static/css/main.709cc867.css",
-    "main.js": "/our_travel_map/static/js/main.58e510a6.js",
+    "main.css": "/our_travel_map/static/css/main.b40a0270.css",
+    "main.js": "/our_travel_map/static/js/main.20e3bf80.js",
     "static/js/453.ff52dbfb.chunk.js": "/our_travel_map/static/js/453.ff52dbfb.chunk.js",
     "static/media/korea_map.svg": "/our_travel_map/static/media/korea_map.c375b6f932d15eec4859a7c13a3554db.svg",
+    "static/media/seoul.svg": "/our_travel_map/static/media/seoul.86c9903895a7b7d32063ae61898b8d39.svg",
     "index.html": "/our_travel_map/index.html",
-    "main.709cc867.css.map": "/our_travel_map/static/css/main.709cc867.css.map",
-    "main.58e510a6.js.map": "/our_travel_map/static/js/main.58e510a6.js.map",
+    "main.b40a0270.css.map": "/our_travel_map/static/css/main.b40a0270.css.map",
+    "main.20e3bf80.js.map": "/our_travel_map/static/js/main.20e3bf80.js.map",
     "453.ff52dbfb.chunk.js.map": "/our_travel_map/static/js/453.ff52dbfb.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.709cc867.css",
-    "static/js/main.58e510a6.js"
+    "static/css/main.b40a0270.css",
+    "static/js/main.20e3bf80.js"
   ]
 }
