@@ -1,23 +1,23 @@
 // src/components/Map/SeoulMapComponent.js
 
 import React, { useState } from 'react';
-import { ReactComponent as SeoulMap } from '../../assets/seoul.svg'; // 변경하신 파일명
+import { useNavigate } from 'react-router-dom'; // 🔥 라우터 훅 추가
+import { ReactComponent as SeoulMap } from '../../assets/seoul.svg';
 import seoulRegionData from './seoulRegionData'; 
-import './DetailMap.css'; // 🔥 새로 만든 공통 CSS 적용
+import './DetailMap.css'; 
 
-const SeoulMapComponent = ({ onBack }) => {
+const SeoulMapComponent = () => {
   const [hoveredRegion, setHoveredRegion] = useState(null);
+  const navigate = useNavigate(); // 🔥 페이지 이동 함수
 
   const handleMapInteraction = (e, type) => {
-    // SVG에 따라 path로 그려지기도 하고 polygon으로 그려지기도 합니다
-    const target = e.target.closest('path') || e.target.closest('polygon');
+    const target = e.target.closest('path') || e.target.closest('polygon') || e.target.closest('g');
     if (!target) return;
 
     const regionId = String(target.id);
 
     if (type === 'click') {
       console.log("클릭한 구역 ID:", regionId);
-      // alert(`${regionId} 클릭됨!`);
     } else if (type === 'hover') {
       setHoveredRegion(regionId);
     }
@@ -25,11 +25,11 @@ const SeoulMapComponent = ({ onBack }) => {
 
   return (
     <div className="detail-fullscreen-wrapper fade-in">
-      <button onClick={onBack} className="detail-back-btn">
+      {/* 🔥 브라우저 히스토리 기능을 써서 진짜 전국지도('/')로 돌아감 */}
+      <button onClick={() => navigate('/')} className="detail-back-btn">
         ← 전국 지도로 돌아가기
       </button>
       
-      {/* 이 컨테이너가 SVG 크기에 딱 맞게 조여져서 라벨 위치가 고정됩니다 */}
       <div className="detail-map-container">
         <SeoulMap 
           className="detail-full-map" 
@@ -38,7 +38,6 @@ const SeoulMapComponent = ({ onBack }) => {
           onMouseOut={() => setHoveredRegion(null)}
         />
 
-        {/* 🗺️ 서울 지역명 라벨 띄우기 */}
         {seoulRegionData.map((region) => (
           <div
             key={region.id}

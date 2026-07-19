@@ -1,23 +1,23 @@
 /* src/components/Map/MapComponent.css */
 
-/* 화면 전체를 채우는 래퍼 */
 .map-wrapper {
   width: 100vw;
-  height: 100vh; /* min-height 대신 height 고정으로 꽉 채움 */
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #f8f9fa; 
-  overflow: hidden; /* 스크롤바가 생기는 것을 방지 */
+  overflow: hidden; 
 }
 
-/* 실제 지도가 들어가는 컨테이너 */
+/* PC 기준 비율 세팅 (이전과 동일) */
 .map-container {
   position: relative;
-  height: 95vh; /* 화면 전체 높이의 95%까지 시원하게 꽉 채움 */
-  width: auto; 
-  max-width: 100vw; /* 가로로 삐져나가지 않게 제한 */
-  aspect-ratio: 800 / 760; /* 원본 비율 고정 (글자 위치 틀어짐 방지) */
+  height: 90vh; 
+  width: calc(90vh * (800 / 760)); 
+  max-width: 95vw; 
+  max-height: calc(95vw * (760 / 800)); 
+  transition: all 0.6s ease-in-out; 
 }
 
 .korea-map {
@@ -26,7 +26,6 @@
   display: block;
 }
 
-/* 🗺️ 각 지역(path) 기본 디자인 */
 .korea-map path {
   fill: #e0e0e0;       
   stroke: #ffffff;     
@@ -35,7 +34,6 @@
   transition: all 0.2s ease-in-out;
 }
 
-/* 🌟 지역에 마우스를 올렸을 때(Hover) 테두리 강조 효과 */
 .korea-map path:hover {
   fill: #cccccc;       
   stroke: #333333;     
@@ -43,21 +41,19 @@
   z-index: 10;         
 }
 
-/* 텍스트(지역명) 기본 디자인 */
+/* 기본 라벨 디자인 (PC 등 일반 화면용) */
 .region-label {
   position: absolute;
   transform: translate(-50%, -50%); 
   background-color: rgba(255, 255, 255, 0.85); 
-  padding: 4px 8px;
+  /* PC 등에서는 반응형(clamp) 유지 */
+  font-size: clamp(10px, 1.8vw, 15px); 
+  padding: clamp(3px, 0.8vw, 6px) clamp(6px, 1.2vw, 12px);
   border-radius: 4px;
-  font-size: 13px;
   font-weight: 600;
   color: #555555;
   box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-  
-  /* 🌟 매우 중요: 글자가 마우스를 무시하게 만들어, 아래쪽 지도가 인식되게 함 */
   pointer-events: none; 
-  
   transition: all 0.2s ease;
   white-space: nowrap;
 }
@@ -66,29 +62,34 @@
   background-color: #333333;
   color: #ffffff;
   font-weight: 700;
-  transform: translate(-50%, -50%) scale(1.1); 
+  transform: translate(-50%, -50%) scale(1.15); 
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   z-index: 20;
 }
 
-/* --------------------------------------
-   애니메이션 및 전환 효과 
--------------------------------------- */
-
-/* 지도 컨테이너 기본 전환 속성 */
-.map-container {
-  transition: all 0.6s ease-in-out; 
-}
-
-/* 🌟 특정 지역 클릭 시 훅 들어가는 효과 (크기를 6배로 키우고 투명해짐) */
 .zoom-active {
   transform: scale(6);
   opacity: 0;
   pointer-events: none;
 }
 
-/* 줌인 될 때 글자들은 깔끔하게 미리 사라지게 함 */
 .fade-out {
   opacity: 0 !important;
   transition: opacity 0.3s ease !important;
+}
+
+/* ------------------------------------------------------
+   📱 모바일 환경 전용 (미디어 쿼리)
+--------------------------------------------------------- */
+@media (max-width: 768px) {
+  .map-container {
+    margin-top: -14vh; 
+    margin-right: -9vh; /* 회원님의 딱 좋은 세팅 유지 */
+    transform: scale(1.5); /* 1.5배 확대 */
+  }
+
+  /* 클릭 시 줌인 효과 세팅 유지 */
+  .map-container.zoom-active {
+    transform: scale(6); 
+  }
 }

@@ -1,7 +1,7 @@
 // src/components/Map/MapComponent.js
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // 🔥 라우터 훅 추가
+import { useNavigate } from "react-router-dom"; // 🔥 뒤로/앞으로 가기 지원을 위한 훅
 import { ReactComponent as SouthKoreaMap } from "../../assets/korea_map.svg"; 
 import regionData from "./regionData";
 import "./MapComponent.css";
@@ -10,7 +10,7 @@ const MapComponent = () => {
   const [hoveredRegion, setHoveredRegion] = useState(null);
   const [zoomingRegion, setZoomingRegion] = useState(null);
   
-  const navigate = useNavigate(); // 🔥 네비게이트 함수 선언
+  const navigate = useNavigate(); // 🔥 페이지 이동 함수
 
   const handleMapInteraction = (e, type) => {
     const target = e.target.closest('path') || e.target.closest('g');
@@ -27,7 +27,7 @@ const MapComponent = () => {
       if (isSeoul) {
         setZoomingRegion("Seoul"); 
         
-        // 🔥 0.6초간 애니메이션을 보여준 뒤, /seoul 경로로 이동합니다.
+        // 🔥 줌인 애니메이션 진행 후, 진짜 /seoul 주소로 이동시킴
         setTimeout(() => {
           navigate("/seoul");
         }, 600); 
